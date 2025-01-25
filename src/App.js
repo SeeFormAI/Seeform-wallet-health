@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Connection, PublicKey } from "@solana/web3.js";
+import "./App.css"; 
 
 const SolanaWalletHealth = () => {
   const [walletAddress, setWalletAddress] = useState("");
@@ -81,7 +82,7 @@ const SolanaWalletHealth = () => {
       const transactionCount = await connection.getTransactionCount(publicKey);
 
       setWalletData({
-        balance: balance / 1e9, // Convert lamports to SOL
+        balance: balance / 1e9, 
         transactionCount,
       });
     } catch (err) {
@@ -92,57 +93,49 @@ const SolanaWalletHealth = () => {
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
-      <h1 style={{ textAlign: "center", fontSize: "24px", fontWeight: "bold" }}>Solana Wallet Health</h1>
+    <div className="container">
+      <h1 className="title">Solana Wallet Health</h1>
 
-      <div style={{ marginBottom: "20px", padding: "10px", border: "1px solid #ddd", borderRadius: "8px" }}>
+      <div className="card">
         <input
           type="text"
           placeholder="Enter your wallet address"
           value={walletAddress}
           onChange={(e) => setWalletAddress(e.target.value)}
-          style={{ width: "100%", padding: "10px", marginBottom: "10px", border: "1px solid #ccc", borderRadius: "4px" }}
+          className="input"
         />
         <button
           onClick={fetchWalletData}
           disabled={loading}
-          style={{
-            width: "100%",
-            padding: "10px",
-            backgroundColor: "#007bff",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: loading ? "not-allowed" : "pointer",
-          }}
+          className={`button ${loading ? "button-disabled" : ""}`}
         >
-          {loading ? "Loading..." : "Check Health"}
+          {loading ? <span className="loader"></span> : "Check Health"}
         </button>
       </div>
 
       {currentSlot !== null && (
-        <div style={{ marginBottom: "20px", padding: "10px", border: "1px solid #ddd", borderRadius: "8px" }}>
-          <p>Current Slot: {currentSlot}</p>
+        <div className="card">
+          <p>Current Slot: <span className="highlight">{currentSlot}</span></p>
         </div>
       )}
 
       {networkHealth && (
-        <div style={{ marginBottom: "20px", padding: "10px", border: "1px solid #ddd", borderRadius: "8px" }}>
-          <p>Network Health: {networkHealth}</p>
+        <div className="card">
+          <p>Network Health: <span className="highlight">{networkHealth}</span></p>
         </div>
       )}
 
       {error && (
-        <div style={{ color: "red", marginBottom: "20px" }}>{error}</div>
+        <div className="error">{error}</div>
       )}
 
       {walletData && (
-        <div style={{ padding: "10px", border: "1px solid #ddd", borderRadius: "8px" }}>
-          <h2 style={{ fontSize: "20px", fontWeight: "bold" }}>Wallet Health Details</h2>
-          <p>Balance: {walletData.balance.toFixed(2)} SOL</p>
-          <p>Transaction Count: {walletData.transactionCount}</p>
+        <div className="card">
+          <h2 className="subtitle">Wallet Health Details</h2>
+          <p>Balance: <span className="highlight">{walletData.balance.toFixed(2)} SOL</span></p>
+          <p>Transaction Count: <span className="highlight">{walletData.transactionCount}</span></p>
           <p>
-            Health Score: {walletData.balance > 10 ? "Healthy" : "Low"} ({walletData.balance.toFixed(2)} SOL)
+            Health Score: <span className="highlight">{walletData.balance > 10 ? "Healthy" : "Low"}</span> ({walletData.balance.toFixed(2)} SOL)
           </p>
         </div>
       )}
