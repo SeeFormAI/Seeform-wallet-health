@@ -5,35 +5,99 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Seeform AI</title>
   <style>
+   
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(to bottom right, #fffaf0, #f5e7dc);
-      color: #333;
+      color: #5a4a3a;
       min-height: 100vh;
       scroll-behavior: smooth;
+      line-height: 1.6;
     }
+
+   
+    #background-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1; 
+    }
+
+    
     header {
       position: relative;
       text-align: center;
-      padding: 4rem 1rem;
+      padding: 6rem 1rem;
       background: linear-gradient(to bottom, #fff5e1, #f7e8d4);
       color: #5a4a3a;
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
     }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 10%, transparent 10.01%);
+      background-size: 20px 20px;
+      animation: animateBackground 10s linear infinite;
+    }
+
+    @keyframes animateBackground {
+      to {
+        transform: translate(50%, 50%);
+      }
+    }
+
+   
+    .solana-image {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      width: 80px; 
+      height: auto;
+      z-index: 2;
+    }
+
+   
     header h1 {
-      font-size: 4rem;
+      font-size: clamp(2.5rem, 6vw, 4rem);
       margin-bottom: 1.5rem;
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 4px; 
       color: #a66b3f;
+      position: relative;
+      z-index: 1;
+      background: linear-gradient(to right, #a66b3f, #8a5734);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: floatText 3s ease-in-out infinite;
     }
+
+    @keyframes floatText {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
     header p {
-      font-size: 1.5rem;
+      font-size: clamp(1.2rem, 3vw, 1.5rem);
       font-weight: 300;
       color: #5a4a3a;
+      position: relative;
+      z-index: 1;
     }
+
+    
     .menu {
       position: absolute;
       top: 1rem;
@@ -44,7 +108,9 @@
       padding: 0.5rem 1rem;
       border-radius: 20px;
       backdrop-filter: blur(10px);
+      z-index: 2;
     }
+
     .menu a {
       color: #5a4a3a;
       text-decoration: none;
@@ -54,76 +120,99 @@
       background: rgba(255, 245, 225, 0.8);
       transition: transform 0.2s ease, background 0.3s;
     }
+
     .menu a:hover {
       transform: scale(1.1);
       background: rgba(250, 230, 200, 0.9);
     }
+
+    
     section {
-      max-width: 900px;
+      max-width: 1200px;
       margin: 4rem auto;
       padding: 2rem;
       text-align: center;
-      background: #fff8f0;
+      background: rgba(255, 255, 255, 0.8);
       border-radius: 20px;
+      backdrop-filter: blur(10px);
       box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     }
+
     section h2 {
-      font-size: 2.5rem;
+      font-size: clamp(2rem, 5vw, 2.5rem);
       margin-bottom: 1rem;
       font-weight: bold;
       color: #a66b3f;
     }
+
     section p {
-      font-size: 1.2rem;
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
       line-height: 1.8;
       color: #5a4a3a;
     }
+
+    
     .grid {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      padding: 1rem;
     }
+
     .card {
-      background: linear-gradient(to bottom, #fff0e0, #f8dcc0);
+      background: rgba(255, 255, 255, 0.9);
       color: #5a4a3a;
       padding: 2rem;
       border-radius: 20px;
-      flex: 1 1 300px;
+      backdrop-filter: blur(10px);
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
       text-align: center;
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
+
     .card:hover {
-      transform: scale(1.05);
+      transform: translateY(-10px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
     }
+
     .card h3 {
       font-size: 1.8rem;
       margin-bottom: 1rem;
       font-weight: bold;
+      color: #a66b3f;
     }
+
     .card p {
       font-size: 1rem;
     }
+
+    
     .contact-form {
       margin-top: 2rem;
       padding: 2rem;
-      background: linear-gradient(to right, #ffead0, #f9dcc2);
-      color: #5a4a3a;
+      background: rgba(255, 255, 255, 0.9);
       border-radius: 20px;
+      backdrop-filter: blur(10px);
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
     }
+
     .contact-form input,
     .contact-form textarea {
       width: 100%;
       padding: 1rem;
       margin-bottom: 1rem;
-      border: 1px solid #ccc;
+      border: 1px solid rgba(90, 74, 58, 0.3);
       border-radius: 10px;
       font-size: 1rem;
       color: #5a4a3a;
-      background: #fffaf0;
+      background: rgba(255, 255, 255, 0.9);
     }
+
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder {
+      color: rgba(90, 74, 58, 0.7);
+    }
+
     .contact-form button {
       padding: 0.75rem 2rem;
       background: #a66b3f;
@@ -134,9 +223,12 @@
       cursor: pointer;
       transition: background 0.3s ease;
     }
+
     .contact-form button:hover {
-      background: #5a4a3a;
+      background: #8a5734;
     }
+
+    
     .scrolling-apps {
       margin-top: 2rem;
       font-size: 1.5rem;
@@ -144,16 +236,23 @@
       color: #a66b3f;
       overflow: hidden;
       position: relative;
-      background: #fff8f0;
+      background: rgba(255, 255, 255, 0.9);
       padding: 1rem 0;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
-    .scrolling-apps span {
-      display: inline-block;
-      white-space: nowrap;
+
+    .scrolling-apps-container {
+      display: flex;
       animation: scroll-apps 15s linear infinite;
+      gap: 3rem; 
     }
+
+    .scrolling-apps img {
+      height: 50px;
+      margin: 0 1rem; 
+    }
+
     @keyframes scroll-apps {
       from {
         transform: translateX(100%);
@@ -162,6 +261,8 @@
         transform: translateX(-100%);
       }
     }
+
+    
     footer {
       margin-top: 4rem;
       padding: 1rem;
@@ -174,7 +275,19 @@
   </style>
 </head>
 <body>
+  
+  <canvas id="background-canvas"></canvas>
+
+  
   <header>
+   
+    <img src="https://upload.wikimedia.org/wikipedia/en/b/b9/Solana_logo.png" alt="Solana Logo" class="solana-image">
+
+    
+    <h1>Seeform AI</h1>
+    <p>Empower your Solana wallet health and take control.</p>
+
+    
     <div class="menu">
       <a href="#home">Home</a>
       <a href="seeformai://open">App</a>
@@ -182,10 +295,9 @@
       <a href="https://github.com/SeeFormAI/Seeform-wallet-health/tree/SeeFormAI-patch-1" target="_blank">GitHub</a>
       <a href="https://x.com/SeeFormAI" target="_blank">Twitter</a>
     </div>
-    <h1>Seeform AI</h1>
-    <p>Empower your Solana wallet health and take control.</p>
   </header>
 
+  
   <section id="home">
     <h2>Our Mission</h2>
     <p>
@@ -222,12 +334,109 @@
       </form>
     </div>
     <div class="scrolling-apps">
-      <span>Phantom | Solflare | Slope | Glow | Exodus | Ledger Live | MathWallet | Trust Wallet</span>
+      <div class="scrolling-apps-container">
+        <img src="images/Phantom-Wallet.png" alt="Phantom">
+        <img src="images/solflare.jpg" alt="Solflare">
+        <img src="images/spore.png" alt="Slope">
+        <img src="images/glow.jpg" alt="Glow">
+        <img src="images/exodus.jpg" alt="Exodus">
+        <img src="images/ledger.jpg" alt="Ledger Live">
+        <img src="images/mattwallet.jpg" alt="MathWallet">
+        <img src="images/trust wallet.jpg" alt="Trust Wallet">
+      </div>
     </div>
   </section>
 
+  
   <footer>
     <p>&copy; 2025 Seeform AI. All rights reserved.</p>
   </footer>
+
+  
+  <script>
+    
+    const canvas = document.getElementById('background-canvas');
+    const ctx = canvas.getContext('2d');
+
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = document.body.scrollHeight; 
+    }
+
+
+    class Particle {
+      constructor(x, y, radius, color, velocity) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.color = color;
+        this.velocity = velocity;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        ctx.closePath();
+      }
+
+      update() {
+        this.draw();
+        this.x += this.velocity.x;
+        this.y += this.velocity.y;
+
+       
+        if (this.x + this.radius > canvas.width || this.x - this.radius < 0) {
+          this.velocity.x = -this.velocity.x;
+        }
+        if (this.y + this.radius > canvas.height || this.y - this.radius < 0) {
+          this.velocity.y = -this.velocity.y;
+        }
+      }
+    }
+
+    
+    const particles = [];
+    const particleCount = 300;
+    const colors = ['#a66b3f', '#f5e7dc', '#fffaf0']; 
+
+    function init() {
+      particles.length = 0;
+      for (let i = 0; i < particleCount; i++) {
+        const radius = Math.random() * 5 + 3; 
+        const x = Math.random() * (canvas.width - radius * 2) + radius;
+        const y = Math.random() * (canvas.height - radius * 2) + radius;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const velocity = {
+          x: (Math.random() - 0.5) * 2,
+          y: (Math.random() - 0.5) * 2,
+        };
+        particles.push(new Particle(x, y, radius, color, velocity));
+      }
+    }
+
+    
+    function animate() {
+      requestAnimationFrame(animate);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach((particle) => {
+        particle.update();
+      });
+    }
+
+    
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      init();
+    });
+
+
+    resizeCanvas();
+    init();
+    animate();
+  </script>
 </body>
 </html>
